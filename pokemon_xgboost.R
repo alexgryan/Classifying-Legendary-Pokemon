@@ -26,7 +26,7 @@ str(train)
 set.seed(542)
 indexes <- createDataPartition(train$Legendary,
                                times = 1,
-                               p = 0.8,
+                               p = 0.7,
                                list = FALSE)
 pokemon.train <- train[indexes,]
 pokemon.test <- train[-indexes,]
@@ -70,3 +70,10 @@ caret.cv
 #Predict based off tuning paramers
 preds <- predict(caret.cv, pokemon.test)
 confusionMatrix(preds, pokemon.test$Legendary)
+
+#Naive Bayes Classifier
+library(e1071)
+
+NB = naiveBayes(pokemon.train, pokemon.train$Legendary,laplace = 1)
+nbHat = predict(NB,pokemon.test$Legendary)
+confusionMatrix(nbHat, pokemon.test$Legendary)
