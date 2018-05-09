@@ -134,13 +134,25 @@ stopCluster(cl)
 
 caret.cv
 
-#Predict based off tuning paramers
-preds <- predict(caret.cv, dragon.test)
-confusionMatrix(preds, dragon.test$isDragon)
-
 #Naive Bayes Classifier
 library(e1071)
 
 NB = naiveBayes(pokemon.train, pokemon.train$Legendary,laplace = 1)
 nbHat = predict(NB,pokemon.test$Legendary)
 confusionMatrix(nbHat, pokemon.test$Legendary)
+
+#KNN Classification
+cl <- makeCluster(3, type = "SOCK")
+registerDoSNOW(cl)
+
+knn_fit <- train(Legendary ~., data = pokemon.train, method = "knn",
+                 trControl= train.control,
+                 preProcess = c("center", "scale"),
+                 tuneLength = 10)
+
+stopCluster(cl)
+
+knn_fit
+
+knnHat = predict(knn_fit, pokemon.test)
+confusionMatrix(knnHat, pokemon.test$Legendary)
