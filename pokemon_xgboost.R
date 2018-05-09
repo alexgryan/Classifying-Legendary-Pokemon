@@ -14,6 +14,12 @@ train$Type.2[train$Type.2 == ""] <- "No Second Type"
 train$OverallStrength <- ifelse(train$Total > median(train$Total),
                                 "Strong", "Weak")
 train$isDragon <- ifelse(train$Type.1 == "Dragon", "Y", "N")
+train$hasHighHP <- ifelse(train$HP > median(train$HP), "Y", "N")
+train$hasHighAttack <- ifelse(train$Attack > median(train$Attack), "Y", "N")
+train$hasHighDefense <- ifelse(train$Defense > median(train$Defense), "Y", "N")
+train$hasHighSpAtk <- ifelse(train$Sp..Atk > median(train$Sp..Atk), "Y", "N")
+train$hasHighSpDef <- ifelse(train$Sp..Def > median(train$Sp..Def), "Y", "N")
+train$hasHighSpeed <- ifelse(train$Speed > median(train$Speed), "Y", "N")
 
 #Factoring Categorical Data
 train$Type.1 <- as.factor(train$Type.1)
@@ -22,11 +28,16 @@ train$Generation <- as.factor(train$Generation)
 train$Legendary <- as.factor(train$Legendary)
 train$OverallStrength <- as.factor(train$OverallStrength)
 train$isDragon <- as.factor(train$isDragon)
-
+train$hasHighHP <- as.factor(train$hasHighHP)
+train$hasHighAttack <- as.factor(train$hasHighAttack)
+train$hasHighDefense <- as.factor(train$hasHighDefense)
+train$hasHighSpAtk <- as.factor(train$hasHighSpAtk)
+train$hasHighSpDef <- as.factor(train$hasHighSpDef)
+train$hasHighSpeed <- as.factor(train$hasHighSpeed)
 
 View(train)
 #Subsets the data we have factored and created features for
-features <- c("Type.1", "Type.2", "Generation", "Legendary","OverallStrength", "isDragon")
+features <- c("Type.1", "Type.2", "Generation", "Legendary","OverallStrength", "isDragon", "hasHighHP", "hasHighDefense","hasHighSpAtk","hasHighSpDef","hasHighSpeed")
 train <- train[, features]
 str(train)
 
