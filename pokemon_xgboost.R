@@ -76,7 +76,7 @@ View(tune.grid)
 cl <- makeCluster(3, type = "SOCK")
 registerDoSNOW(cl)
 
-#Gather training model with 2 clusters
+#Gather training model with 2 clusters to identify legendary pokemon
 caret.cv <- train(Legendary ~ ., 
                   data = pokemon.train,
                   method = "xgbTree",
@@ -89,6 +89,54 @@ caret.cv
 #Predict based off tuning paramers
 preds <- predict(caret.cv, pokemon.test)
 confusionMatrix(preds, pokemon.test$Legendary)
+
+#Creating the Training and Test Splits for Dragon Classifier
+set.seed(54234)
+indexes <- createDataPartition(train$isDragon,
+                               times = 1,
+                               p = 0.75,
+                               list = FALSE)
+dragon.train <- train[indexes,]
+dragon.test <- train[-indexes,]
+
+
+# Examine the proportions of the Survived class lable across
+# the datasets.
+prop.table(table(train$isDragon))
+prop.table(table(dragon.train$isDragon))
+prop.table(table(dragon.test$isDragon))
+
+# Cross validation and tuning for model
+train.control <- trainControl(method = "repeatedcv",
+                              number = 10,
+                              repeats = 3,
+                              search = "grid")
+
+tune.grid <- expand.grid(eta = c(0.05, 0.075, 0.1),
+                         nrounds = c(50, 75, 100),
+                         max_depth = 4:8,
+                         min_child_weight = c(2.0, 2.25, 2.5),
+                         colsample_bytree = c(0.3, 0.4, 0.5),
+                         gamma = 0,
+                         subsample = 1)
+
+#Creating Cluster
+cl <- makeCluster(3, type = "SOCK")
+registerDoSNOW(cl)
+
+#Gather training model with 2 clusters to identify legendary pokemon
+caret.cv <- train(isDragon ~ ., 
+                  data = dragon.train,
+                  method = "xgbTree",
+                  tuneGrid = tune.grid,
+                  trControl = train.control)
+stopCluster(cl)
+
+caret.cv
+
+#Predict based off tuning paramers
+preds <- predict(caret.cv, dragon.test)
+confusionMatrix(preds, dragon.test$isDragon)
 
 #Naive Bayes Classifier
 library(e1071)
