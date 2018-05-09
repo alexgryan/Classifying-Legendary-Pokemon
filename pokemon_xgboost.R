@@ -156,3 +156,6 @@ knn_fit
 
 knnHat = predict(knn_fit, pokemon.test)
 confusionMatrix(knnHat, pokemon.test$Legendary)
+ctable <- as.table(confusionMatrix(knnHat, pokemon.test$Legendary), nrow = 2, byrow = TRUE)
+fourfoldplot(ctable, color = c("#CC6666", "#99CC99"),
+             conf.level = 0, margin = 1, main = "Confusion Matrix")
