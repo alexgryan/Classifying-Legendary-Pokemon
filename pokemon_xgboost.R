@@ -10,23 +10,31 @@ View(train)
 table(train$Type.2)
 train$Type.2[train$Type.2 == ""] <- "No Second Type"
 
+#Create Features to Distinguish Legendaries from non-Legendaries
+train$OverallStrength <- ifelse(train$Total > median(train$Total),
+                                "Strong", "Weak")
+train$isDragon <- ifelse(train$Type.1 == "Dragon", "Y", "N")
+
 #Factoring Categorical Data
-train$Name <- as.factor(train$Name)
 train$Type.1 <- as.factor(train$Type.1)
 train$Type.2 <- as.factor(train$Type.2)
 train$Generation <- as.factor(train$Generation)
 train$Legendary <- as.factor(train$Legendary)
+train$OverallStrength <- as.factor(train$OverallStrength)
+train$isDragon <- as.factor(train$isDragon)
 
+
+View(train)
 #Subsets the data we have factored and created features for
-features <- c("Name", "Type.1", "Type.2", "Generation", "Legendary")
+features <- c("Type.1", "Type.2", "Generation", "Legendary","OverallStrength", "isDragon")
 train <- train[, features]
 str(train)
 
 #Creating the Training and Test Splits
-set.seed(542)
+set.seed(54234)
 indexes <- createDataPartition(train$Legendary,
                                times = 1,
-                               p = 0.7,
+                               p = 0.75,
                                list = FALSE)
 pokemon.train <- train[indexes,]
 pokemon.test <- train[-indexes,]
