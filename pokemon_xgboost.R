@@ -77,7 +77,7 @@ str(train)
 set.seed(54234)
 indexes <- createDataPartition(train$Legendary,
                                times = 1,
-                               p = 0.75,
+                               p = 0.8,
                                list = FALSE)
 pokemon.train <- train[indexes,]
 pokemon.test <- train[-indexes,]
@@ -95,7 +95,7 @@ train.control <- trainControl(method = "repeatedcv",
                               repeats = 3,
                               search = "grid")
 
-tune.grid <- expand.grid(eta = c(0.05, 0.075, 0.1),
+tune.grid <- expand.grid(eta = c( 0.1, 0.2, 0.3, 0.4, 0.5),
                          nrounds = c(50, 75, 100),
                          max_depth = 4:8,
                          min_child_weight = c(2.0, 2.25, 2.5),
