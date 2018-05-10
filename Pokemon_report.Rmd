@@ -64,3 +64,5 @@ merge(
   scale_fill_identity() + coord_flip() + theme_fivethirtyeight() + 
   ggtitle("Pokemon Distribution") + scale_alpha_discrete(range=c(.9,.6))
 ```
+
+As you can see from the graph above. The Psychic, Dragon, and Flying Types have a higher proportion of legendaries than the other types. So I decided to create three new features that target those three types of pokemon. There is also another feature I created based on the graph below.
