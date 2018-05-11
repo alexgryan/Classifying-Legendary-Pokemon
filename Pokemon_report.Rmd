@@ -65,4 +65,25 @@ merge(
   ggtitle("Pokemon Distribution") + scale_alpha_discrete(range=c(.9,.6))
 ```
 
-As you can see from the graph above. The Psychic, Dragon, and Flying Types have a higher proportion of legendaries than the other types. So I decided to create three new features that target those three types of pokemon. There is also another feature I created based on the graph below.
+This graph displays the number of pokemon for each primary type and proportion of legendaries in each type. The Psychic, Dragon, and Flying Types have a higher proportion of Legendaries than the other types. So I decided to create three features that target those three types of pokemon. There is also another feature I created based on the graph below.
+
+```{r echo = FALSE, eval = TRUE, fig.width=12, fig.height=12, fig.align='center'}
+res<-data.frame(pokemon %>% dplyr::select(Type.1,HP, Attack, Defense, Sp.Atk, Sp.Def, Speed) %>% dplyr::group_by(Type.1) %>% dplyr::summarise_all(funs(mean)) %>% mutate(sumChars = HP + Attack + Defense + Sp.Atk + Sp.Def + Speed) %>% arrange(-sumChars))
+res$color<-color
+max<- ceiling(apply(res[,2:7], 2, function(x) max(x, na.rm = TRUE)) %>% sapply(as.double)) %>% as.vector
+min<-rep.int(0,6)
+par(mfrow=c(3,6))
+par(mar=c(1,1,1,1))
+for(i in 1:nrow(res)){
+  curCol<-(col2rgb(as.character(res$color[i]))%>% as.integer())/255
+  radarchart(rbind(max,min,res[i,2:7]),
+             axistype=2 , 
+             pcol=rgb(curCol[1],curCol[2],curCol[3], alpha = 1) ,
+             pfcol=rgb(curCol[1],curCol[2],curCol[3],.5) ,
+             plwd=2 , cglcol="grey", cglty=1, 
+             axislabcol="black", caxislabels=seq(0,2000,5), cglwd=0.8, vlcex=0.8,
+             title=as.character(res$Type.1[i]))
+}
+```
+
+In this graph, we can see the average base stat distribution in comparision to the primary type's average base stat distribution. The three categories of Psychic, Dragon, and Flying all have at least average to above average stat distribution for each stat. Because each of those three primary types have a high proportion of legendaries, I decided to create a total stat strength feature to help improve legendary classification. 
