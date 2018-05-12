@@ -107,7 +107,7 @@ pokemon$OverallStrength <- ifelse(pokemon$Total > median(pokemon$Total),
                                 "Strong", "Weak")
 ```
 
-## Factors used for classification
+## Factors Used for Classification
 In order to have our classification recognize our categorical data, we need to create factors for each column that we are using. This includes the features we created above.
 
 ```{r message=FALSE}
@@ -125,3 +125,23 @@ features <- c("Type.1", "Type.2", "Generation", "Legendary","OverallStrength",
 pokemon <- pokemon[, features]
 ```
 
+## Train and Test Partitions
+The train and test splits were partitioned in a proportion of 80% of the data going to train and 20% of the data going to test. Both of the splits were roughly in same proportion of legendary and non-legendary like the original dataset.
+
+```{r message=FALSE}
+# Creating Train and Test Splits
+set.seed(54234)
+indexes <- createDataPartition(pokemon$Legendary,
+                               times = 1,
+                               p = 0.8,
+                               list = FALSE)
+pokemon.train <- pokemon[indexes,]
+pokemon.test <- pokemon[-indexes,]
+
+# Examine the proportions of the Survived class lable across
+# the datasets.
+prop.table(table(pokemon$Legendary))
+prop.table(table(pokemon.train$Legendary))
+prop.table(table(pokemon.test$Legendary))
+
+```
