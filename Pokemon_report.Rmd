@@ -106,3 +106,18 @@ This is the feature code for checking if pokemon has higher total base stats tha
 pokemon$OverallStrength <- ifelse(pokemon$Total > median(pokemon$Total),
                                 "Strong", "Weak")
 ```
+
+## Factors used for classification
+In order to have our classification recognize our categorical data, we need to create factors for each column that we are using. This includes the features we created above.
+
+```{r message=FALSE}
+#Factoring Categorical Data and Features
+pokemon$Type.1 <- as.factor(pokemon$Type.1)
+pokemon$Type.2 <- as.factor(pokemon$Type.2)
+pokemon$Generation <- as.factor(pokemon$Generation)
+pokemon$Legendary <- as.factor(pokemon$Legendary)
+pokemon$OverallStrength <- as.factor(pokemon$OverallStrength)
+pokemon$isDragon <- as.factor(pokemon$isDragon)
+pokemon$isPsychic <- as.factor(pokemon$isPsychic)
+pokemon$isFlying <- as.factor(pokemon$isFlying)
+```
