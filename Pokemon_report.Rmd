@@ -87,3 +87,22 @@ for(i in 1:nrow(res)){
 ```
 
 In this graph, we can see the average base stat distribution in comparision to the primary type's average base stat distribution. The three categories of Psychic, Dragon, and Flying all have at least average to above average stat distribution for each stat. Because each of those three primary types have a high proportion of legendaries, I decided to create a total stat strength feature to help improve legendary classification. 
+
+## Features Created
+
+This is the feature code for checking if the pokemon is a dragon, psychic, or flying. These three types all have a high proportion of legendary pokemon.
+
+```{r message=FALSE}
+#Features to distinguish pokemon of these three types
+pokemon$isDragon <- ifelse(pokemon$Type.1 == "Dragon", "Y", "N")
+pokemon$isPsychic <- ifelse(pokemon$Type.1 == "Psychic", "Y", "N")
+pokemon$isFlying <- ifelse(pokemon$Type.1 == "Flying", "Y", "N")
+```
+
+This is the feature code for checking if pokemon has higher total base stats than the median pokemon. This is because legendaries and the three high proportion types have higher base stats than the average pokemon.
+
+```{r message=FALSE}
+#Features to 
+pokemon$OverallStrength <- ifelse(pokemon$Total > median(pokemon$Total),
+                                "Strong", "Weak")
+```
