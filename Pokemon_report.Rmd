@@ -120,4 +120,8 @@ pokemon$OverallStrength <- as.factor(pokemon$OverallStrength)
 pokemon$isDragon <- as.factor(pokemon$isDragon)
 pokemon$isPsychic <- as.factor(pokemon$isPsychic)
 pokemon$isFlying <- as.factor(pokemon$isFlying)
+features <- c("Type.1", "Type.2", "Generation", "Legendary","OverallStrength", 
+              "isDragon", "isPsychic", "isFlying")
+pokemon <- pokemon[, features]
 ```
+
