@@ -214,3 +214,18 @@ stopCluster(cl)
 knnHat = predict(knn_fit, pokemon.test)
 confusionMatrix(knnHat, pokemon.test$Legendary)
 ```
+
+## Comparisions between Classifiers
+I decided to plot the confusion matrix of each classifier and compare each of them. Here is a visualization below.
+``` {r echo=FALSE, include = TRUE, eval=TRUE}
+xtable <- as.table(confusionMatrix(xgbHat, pokemon.test$Legendary), nrow = 2, byrow = TRUE)
+ntable <- as.table(confusionMatrix(nbHat, pokemon.test$Legendary), nrow = 2, byrow = TRUE)
+ktable <- as.table(confusionMatrix(knnHat, pokemon.test$Legendary), nrow = 2, byrow = TRUE)
+par(mfrow=c(1,3)) 
+fourfoldplot(xtable, color = c("#CC6666", "#99CC99"),
+             conf.level = 0, margin = 1.0, main = "XGBoost")
+fourfoldplot(ntable, color = c("#CC6666", "#99CC99"),
+             conf.level = 0, margin = 1.0, main = "Naive Bayes")
+fourfoldplot(ktable, color = c("#CC6666", "#99CC99"),
+             conf.level = 0, margin = 1.0, main = "KNN")
+```
