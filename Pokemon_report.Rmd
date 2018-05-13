@@ -229,3 +229,6 @@ fourfoldplot(ntable, color = c("#CC6666", "#99CC99"),
 fourfoldplot(ktable, color = c("#CC6666", "#99CC99"),
              conf.level = 0, margin = 1.0, main = "KNN")
 ```
+According to the visualizations the XGB model has the best outcomes identifying Legendary Pokemon with a specificity score of 46%, whereas the knn and naive bayes models where not able to identify Legendary Pokemon at all with specificity scores of 0%. Although the XGB model does better identification of Legendary Pokemon, it has a lower accuracy score because it handles non-Legendary Pokemon identification worse than the knn and naive bayes models. Overall, I would choose utilizing the XGB model with optimized parameters because it handles identifying Legendary Pokemon a lot better than the knn and naive bayes model.
+
+## Conclusion and Improvements
