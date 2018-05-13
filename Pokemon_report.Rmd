@@ -146,7 +146,7 @@ prop.table(table(pokemon.test$Legendary))
 
 ```
 
-## Cross Validation and Hypertuning
+## Cross Validation and Hypertuning For XGBoost
 Creating a process for cross validation to occur 10 times and be repeated 3 times, making a grand total of 30 times. I also used a tuning grid for the xgboost in order to optimize the tuning parameters.
 
 ```{r message=FALSE}
@@ -164,4 +164,25 @@ tune.grid <- expand.grid(eta = c( 0.1, 0.2, 0.3, 0.4, 0.5),
                          colsample_bytree = c(0.5, 0.75, 1.0),
                          gamma = 0,
                          subsample = 1)
+```
+
+## Creating a Cluster to Obtain Optimatal Parameters for XGBoost
+I utilized doSNOW to create a cluster with 3 cores. I recommend only running 2 or less cores, if you do not have a workstation quality computer.I then inputted the parameters into the prediction and displayed the results in a confusion matrix, which compares the predictions to the actual results.
+
+```{r message=FALSE}
+#Creating Cluster
+cl <- makeCluster(3, type = "SOCK")
+registerDoSNOW(cl)
+
+#Gather training model with 3 clusters to identify legendary pokemon
+caret.cv <- train(Legendary ~ ., 
+                  data = pokemon.train,
+                  method = "xgbTree",
+                  tuneGrid = tune.grid,
+                  trControl = train.control)
+stopCluster(cl)
+
+#Predict and output results in a confusion matrix
+xgbHat = predict(caret.cv, pokemon.test)
+confusionMatrix(xgbHat, pokemon.test$Legendary)
 ```
