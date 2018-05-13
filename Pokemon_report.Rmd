@@ -145,3 +145,23 @@ prop.table(table(pokemon.train$Legendary))
 prop.table(table(pokemon.test$Legendary))
 
 ```
+
+## Cross Validation and Hypertuning
+Creating a process for cross validation to occur 10 times and be repeated 3 times, making a grand total of 30 times. I also used a tuning grid for the xgboost in order to optimize the tuning parameters.
+
+```{r message=FALSE}
+# Cross validation and tuning for model
+train.control <- trainControl(method = "repeatedcv",
+                              number = 10,
+                              repeats = 3,
+                              search = "grid")
+
+# Tuning grid for xgboost trees
+tune.grid <- expand.grid(eta = c( 0.1, 0.2, 0.3, 0.4, 0.5),
+                         nrounds = c(50, 75, 100),
+                         max_depth = 4:8,
+                         min_child_weight = c(2.0, 2.25, 2.5),
+                         colsample_bytree = c(0.5, 0.75, 1.0),
+                         gamma = 0,
+                         subsample = 1)
+```
